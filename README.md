@@ -1,4 +1,4 @@
-# Data-enigeering-My-Projects — Muralidhar Reddy Anumandla
+# Data-engineering-My-Projects — Muralidhar Reddy Anumandla
 
 Personal projects built during my M.S. in Computer Science at Virginia Commonwealth University. Both focus on batch ETL/ELT pipeline design on Azure — ingestion, transformation, incremental loading, and warehouse modeling.
 
