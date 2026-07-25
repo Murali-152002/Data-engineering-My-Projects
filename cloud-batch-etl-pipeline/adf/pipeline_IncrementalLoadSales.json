@@ -1,0 +1,127 @@
+{
+  "name": "PL_IncrementalLoad_SalesTransactions",
+  "type": "Microsoft.DataFactory/factories/pipelines",
+  "properties": {
+    "description": "Daily incremental load: Blob Storage CSV drops -> Azure SQL staging -> MERGE into dw.fact_sales. Watermark-driven so only new/changed source rows are copied each run.",
+    "activities": [
+      {
+        "name": "LookupOldWatermark",
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "AzureSqlSource",
+            "sqlReaderQuery": "SELECT WatermarkValue FROM dw.etl_watermark WHERE TableName = 'fact_sales'"
+          },
+          "dataset": { "referenceName": "DS_Sql_EtlWatermark", "type": "DatasetReference" },
+          "firstRowOnly": true
+        }
+      },
+      {
+        "name": "LookupNewWatermark",
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource"
+          },
+          "dataset": { "referenceName": "DS_Blob_SalesCsv", "type": "DatasetReference" },
+          "firstRowOnly": false
+        },
+        "dependsOn": [
+          { "activity": "LookupOldWatermark", "dependencyConditions": ["Succeeded"] }
+        ]
+      },
+      {
+        "name": "CopyNewSalesRowsToStaging",
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource"
+          },
+          "sink": {
+            "type": "AzureSqlSink",
+            "preCopyScript": "TRUNCATE TABLE dw.stg_sales_transactions",
+            "writeBehavior": "insert"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "name": "TransactionID" }, "sink": { "name": "TransactionID" } },
+              { "source": { "name": "CustomerID" },   "sink": { "name": "CustomerID" } },
+              { "source": { "name": "ProductID" },    "sink": { "name": "ProductID" } },
+              { "source": { "name": "OrderDate" },    "sink": { "name": "OrderDate" } },
+              { "source": { "name": "Quantity" },     "sink": { "name": "Quantity" } },
+              { "source": { "name": "UnitPrice" },    "sink": { "name": "UnitPrice" } },
+              { "source": { "name": "Region" },       "sink": { "name": "Region" } }
+            ]
+          }
+        },
+        "inputs": [{ "referenceName": "DS_Blob_SalesCsv", "type": "DatasetReference" }],
+        "outputs": [{ "referenceName": "DS_Sql_StgSalesTransactions", "type": "DatasetReference" }],
+        "dependsOn": [
+          { "activity": "LookupNewWatermark", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "02:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30
+        }
+      },
+      {
+        "name": "MergeStagingIntoFactSales",
+        "type": "SqlServerStoredProcedure",
+        "typeProperties": {
+          "storedProcedureName": "dw.usp_MergeSalesStaging"
+        },
+        "linkedServiceName": { "referenceName": "LS_AzureSqlDatabase", "type": "LinkedServiceReference" },
+        "dependsOn": [
+          { "activity": "CopyNewSalesRowsToStaging", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "01:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30
+        }
+      },
+      {
+        "name": "UpdateWatermark",
+        "type": "SqlServerStoredProcedure",
+        "typeProperties": {
+          "storedProcedureName": "dw.usp_UpdateWatermark",
+          "storedProcedureParameters": {
+            "TableName": { "type": "String", "value": "fact_sales" },
+            "NewWatermarkValue": { "type": "DateTime", "value": "@utcnow()" }
+          }
+        },
+        "linkedServiceName": { "referenceName": "LS_AzureSqlDatabase", "type": "LinkedServiceReference" },
+        "dependsOn": [
+          { "activity": "MergeStagingIntoFactSales", "dependencyConditions": ["Succeeded"] }
+        ]
+      },
+      {
+        "name": "SendFailureAlert",
+        "type": "WebActivity",
+        "typeProperties": {
+          "url": "@pipeline().parameters.AlertWebhookUrl",
+          "method": "POST",
+          "body": {
+            "pipeline": "@pipeline().Pipeline",
+            "runId": "@pipeline().RunId",
+            "message": "PL_IncrementalLoad_SalesTransactions failed - see ADF monitor for the failed activity."
+          }
+        },
+        "dependsOn": [
+          { "activity": "MergeStagingIntoFactSales", "dependencyConditions": ["Failed"] },
+          { "activity": "CopyNewSalesRowsToStaging", "dependencyConditions": ["Failed"] }
+        ]
+      }
+    ],
+    "parameters": {
+      "AlertWebhookUrl": {
+        "type": "String",
+        "defaultValue": "https://<logic-app-or-teams-webhook-url>"
+      }
+    },
+    "annotations": []
+  }
+}

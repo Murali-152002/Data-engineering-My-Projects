@@ -1,0 +1,19 @@
+{
+  "name": "LS_AzureSqlDatabase",
+  "type": "Microsoft.DataFactory/factories/linkedservices",
+  "properties": {
+    "annotations": [],
+    "type": "AzureSqlDatabase",
+    "typeProperties": {
+      "connectionString": "Data Source=tcp:<server-name>.database.windows.net,1433;Initial Catalog=<database-name>;",
+      "password": {
+        "type": "AzureKeyVaultSecret",
+        "store": {
+          "referenceName": "LS_KeyVault",
+          "type": "LinkedServiceReference"
+        },
+        "secretName": "sql-connection-password"
+      }
+    }
+  }
+}

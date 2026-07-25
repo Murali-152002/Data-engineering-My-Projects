@@ -1,0 +1,11 @@
+# Generated data / local demo output - regenerate locally, don't commit
+local_demo/sample_data/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# OS
+.DS_Store
