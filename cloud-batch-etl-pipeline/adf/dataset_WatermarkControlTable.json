@@ -1,0 +1,17 @@
+{
+  "name": "DS_Sql_EtlWatermark",
+  "type": "Microsoft.DataFactory/factories/datasets",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "LS_AzureSqlDatabase",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzureSqlTable",
+    "schema": [],
+    "typeProperties": {
+      "schema": "dw",
+      "table": "etl_watermark"
+    }
+  }
+}

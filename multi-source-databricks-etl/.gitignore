@@ -1,0 +1,14 @@
+# Generated data / pipeline output - regenerate locally, don't commit
+lakehouse/
+logs/
+sample_data/
+notebooks/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# OS
+.DS_Store
