@@ -1,0 +1,10 @@
+{
+  "name": "LS_LandingBlobStorage",
+  "properties": {
+    "type": "AzureBlobFS",
+    "typeProperties": {
+      "url": "https://ordersdatalake.dfs.core.windows.net/"
+    },
+    "annotations": ["Local dev target: ./landing/ (filesystem stand-in for ADLS Gen2)"]
+  }
+}

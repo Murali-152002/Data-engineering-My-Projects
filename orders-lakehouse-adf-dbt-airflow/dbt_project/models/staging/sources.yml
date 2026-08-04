@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: bronze
+    meta:
+      external_location: "read_parquet('{{ env_var('BRONZE_ORDERS_PATH') }}/*.parquet')"
+    tables:
+      - name: orders

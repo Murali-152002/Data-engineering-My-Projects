@@ -1,0 +1,13 @@
+orders_intelligence:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '../warehouse/orders_intelligence.duckdb'
+      # Local dev substitute for the dbt-databricks adapter: a live Databricks
+      # SQL warehouse isn't available for a personal project without an Azure
+      # subscription. dbt-duckdb runs the exact same dbt models/tests/docs -
+      # only the query engine target differs, same substitution pattern used
+      # for delta-rs standing in for the Databricks Delta runtime elsewhere
+      # in this repo.
+      extensions: []

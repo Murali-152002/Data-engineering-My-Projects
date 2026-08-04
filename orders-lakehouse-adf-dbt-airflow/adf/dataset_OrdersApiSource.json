@@ -1,0 +1,17 @@
+{
+  "name": "DS_OrdersApiSource",
+  "properties": {
+    "type": "RestResource",
+    "linkedServiceName": { "referenceName": "LS_OrdersRestApi", "type": "LinkedServiceReference" },
+    "typeProperties": {
+      "relativeUrl": {
+        "value": "?modified_since=@{dataset().watermark}&cursor=@{dataset().cursor}&page_size=200",
+        "type": "Expression"
+      }
+    },
+    "parameters": {
+      "watermark": { "type": "string", "defaultValue": "" },
+      "cursor": { "type": "int", "defaultValue": 0 }
+    }
+  }
+}

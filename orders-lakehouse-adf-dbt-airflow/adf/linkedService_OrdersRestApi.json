@@ -1,0 +1,12 @@
+{
+  "name": "LS_OrdersRestApi",
+  "properties": {
+    "type": "RestService",
+    "typeProperties": {
+      "url": "https://internal-orders-api.contoso.com/api/orders",
+      "authenticationType": "Anonymous",
+      "enableServerCertificateValidation": true
+    },
+    "annotations": ["Local dev target: http://127.0.0.1:5055/api/orders (mock_orders_api.py)"]
+  }
+}

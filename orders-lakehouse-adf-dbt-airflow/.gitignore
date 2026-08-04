@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+landing/**
+!landing/.gitkeep
+warehouse/
+dbt_project/target/
+dbt_project/logs/
+dbt_project/profiles/.user.yml
+orchestration/airflow_home/
+orchestration/.last_dbt_run_marker
+control/watermark.json
+*.log

@@ -1,0 +1,122 @@
+{
+  "name": "PL_IncrementalOrdersIngestion",
+  "properties": {
+    "description": "Parameterized, incremental, idempotent ingestion of the Orders REST API into the landing zone. Designed from scratch (not copied from an existing template): Lookup last watermark -> page through the API via an Until loop until next_cursor is null -> land each page as JSON -> on success, advance the watermark to the max modified_at actually ingested this run. A failed run does not advance the watermark, so re-running after a failure re-pulls the same window instead of skipping it (idempotent-by-construction).",
+    "activities": [
+      {
+        "name": "LookupLastWatermark",
+        "type": "Lookup",
+        "typeProperties": {
+          "source": { "type": "AzureSqlSource", "sqlReaderQuery": "SELECT TOP 1 last_modified_at FROM etl.orders_watermark ORDER BY watermark_id DESC" },
+          "dataset": { "referenceName": "DS_WatermarkControlTable", "type": "DatasetReference" }
+        }
+      },
+      {
+        "name": "SetWatermarkVar",
+        "type": "SetVariable",
+        "dependsOn": [{ "activity": "LookupLastWatermark", "dependencyConditions": ["Succeeded"] }],
+        "typeProperties": {
+          "variableName": "watermarkValue",
+          "value": { "value": "@activity('LookupLastWatermark').output.firstRow.last_modified_at", "type": "Expression" }
+        }
+      },
+      {
+        "name": "SetCursorVar",
+        "type": "SetVariable",
+        "dependsOn": [{ "activity": "SetWatermarkVar", "dependencyConditions": ["Succeeded"] }],
+        "typeProperties": { "variableName": "cursorValue", "value": "0" }
+      },
+      {
+        "name": "SetHasMorePages",
+        "type": "SetVariable",
+        "dependsOn": [{ "activity": "SetCursorVar", "dependencyConditions": ["Succeeded"] }],
+        "typeProperties": { "variableName": "hasMorePages", "value": "true" }
+      },
+      {
+        "name": "SetMaxModifiedSeen",
+        "type": "SetVariable",
+        "dependsOn": [{ "activity": "SetHasMorePages", "dependencyConditions": ["Succeeded"] }],
+        "typeProperties": {
+          "variableName": "maxModifiedSeen",
+          "value": { "value": "@variables('watermarkValue')", "type": "Expression" }
+        }
+      },
+      {
+        "name": "PageThroughOrdersApi",
+        "type": "Until",
+        "dependsOn": [{ "activity": "SetMaxModifiedSeen", "dependencyConditions": ["Succeeded"] }],
+        "typeProperties": {
+          "expression": { "value": "@equals(variables('hasMorePages'), false)", "type": "Expression" },
+          "timeout": "0.02:00:00",
+          "activities": [
+            {
+              "name": "CopyOrdersPage",
+              "type": "Copy",
+              "typeProperties": {
+                "source": { "type": "RestSource", "httpRequestTimeout": "00:01:40" },
+                "sink": { "type": "JsonSink" }
+              },
+              "inputs": [{
+                "referenceName": "DS_OrdersApiSource", "type": "DatasetReference",
+                "parameters": { "watermark": "@variables('watermarkValue')", "cursor": "@variables('cursorValue')" }
+              }],
+              "outputs": [{
+                "referenceName": "DS_LandingOrdersJson", "type": "DatasetReference",
+                "parameters": { "pageCounter": "@variables('cursorValue')" }
+              }]
+            },
+            {
+              "name": "TrackMaxModifiedInPage",
+              "type": "SetVariable",
+              "dependsOn": [{ "activity": "CopyOrdersPage", "dependencyConditions": ["Succeeded"] }],
+              "typeProperties": {
+                "variableName": "maxModifiedSeen",
+                "value": { "value": "@if(greater(activity('CopyOrdersPage').output.maxModifiedAt, variables('maxModifiedSeen')), activity('CopyOrdersPage').output.maxModifiedAt, variables('maxModifiedSeen'))", "type": "Expression" }
+              }
+            },
+            {
+              "name": "EvaluateNextCursor",
+              "type": "IfCondition",
+              "dependsOn": [{ "activity": "TrackMaxModifiedInPage", "dependencyConditions": ["Succeeded"] }],
+              "typeProperties": {
+                "expression": { "value": "@equals(activity('CopyOrdersPage').output.nextCursor, null)", "type": "Expression" },
+                "ifTrueActivities": [
+                  { "name": "MarkDone", "type": "SetVariable", "typeProperties": { "variableName": "hasMorePages", "value": "false" } }
+                ],
+                "ifFalseActivities": [
+                  { "name": "AdvanceCursor", "type": "SetVariable", "typeProperties": { "variableName": "cursorValue", "value": { "value": "@string(activity('CopyOrdersPage').output.nextCursor)", "type": "Expression" } } }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "AdvanceWatermarkOnSuccess",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [{ "activity": "PageThroughOrdersApi", "dependencyConditions": ["Succeeded"] }],
+        "typeProperties": {
+          "storedProcedureName": "etl.usp_AdvanceOrdersWatermark",
+          "storedProcedureParameters": { "new_watermark": { "value": { "value": "@variables('maxModifiedSeen')", "type": "Expression" }, "type": "String" } }
+        }
+      },
+      {
+        "name": "SendFailureAlert",
+        "type": "WebActivity",
+        "dependsOn": [{ "activity": "PageThroughOrdersApi", "dependencyConditions": ["Failed"] }],
+        "typeProperties": {
+          "url": "@pipeline().globalParameters.alertWebhookUrl",
+          "method": "POST",
+          "body": { "value": "{\"pipeline\":\"PL_IncrementalOrdersIngestion\",\"runId\":\"@{pipeline().RunId}\",\"status\":\"failed - watermark NOT advanced, safe to re-run\"}", "type": "Expression" }
+        }
+      }
+    ],
+    "variables": {
+      "watermarkValue": { "type": "String" },
+      "cursorValue": { "type": "String" },
+      "hasMorePages": { "type": "Boolean" },
+      "maxModifiedSeen": { "type": "String" }
+    },
+    "annotations": ["idempotent: watermark only advances in AdvanceWatermarkOnSuccess, which only runs if every page in the Until loop succeeded"]
+  }
+}
