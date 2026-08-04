@@ -1,0 +1,16 @@
+{
+  "name": "TR_TumblingWindow_OrdersIngestion",
+  "properties": {
+    "type": "TumblingWindowTrigger",
+    "typeProperties": {
+      "frequency": "Hour",
+      "interval": 1,
+      "startTime": "2026-08-04T00:00:00Z",
+      "delay": "00:05:00",
+      "maxConcurrency": 1,
+      "retryPolicy": { "count": 3, "intervalInSeconds": 300 }
+    },
+    "pipeline": { "pipelineReference": { "referenceName": "PL_IncrementalOrdersIngestion", "type": "PipelineReference" } },
+    "annotations": ["hourly incremental pull; maxConcurrency=1 prevents overlapping runs from racing on the watermark"]
+  }
+}

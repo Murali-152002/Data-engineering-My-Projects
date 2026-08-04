@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Cleaned, typed, deduplicated order rows from Bronze - one row per order_id (latest version wins).
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: quantity
+        tests:
+          - not_null
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ['completed', 'returned', 'cancelled']

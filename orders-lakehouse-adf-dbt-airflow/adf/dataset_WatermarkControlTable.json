@@ -1,0 +1,9 @@
+{
+  "name": "DS_WatermarkControlTable",
+  "properties": {
+    "type": "AzureSqlTable",
+    "linkedServiceName": { "referenceName": "LS_ControlDb", "type": "LinkedServiceReference" },
+    "typeProperties": { "tableName": "etl.orders_watermark" },
+    "annotations": ["Local dev target: ./control/watermark.json (single-row watermark file)"]
+  }
+}

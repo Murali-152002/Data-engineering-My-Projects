@@ -1,0 +1,9 @@
+pyspark==3.5.1
+deltalake==1.6.2
+duckdb==1.5.5
+dbt-core==1.9.4
+dbt-duckdb==1.9.1
+apache-airflow==2.9.3
+flask==3.0.3
+requests==2.32.3
+pytest==9.1.1

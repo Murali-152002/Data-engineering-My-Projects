@@ -1,0 +1,24 @@
+{
+  "name": "DS_LandingOrdersJson",
+  "properties": {
+    "type": "Json",
+    "linkedServiceName": { "referenceName": "LS_LandingBlobStorage", "type": "LinkedServiceReference" },
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobFSLocation",
+        "fileSystem": "landing",
+        "folderPath": {
+          "value": "orders/run_date=@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
+          "type": "Expression"
+        },
+        "fileName": {
+          "value": "orders_page_@{formatDateTime(utcnow(),'yyyyMMddHHmmss')}_@{pipeline().parameters.pageCounter}.json",
+          "type": "Expression"
+        }
+      }
+    },
+    "parameters": {
+      "pageCounter": { "type": "int", "defaultValue": 0 }
+    }
+  }
+}
