@@ -1,0 +1,241 @@
+product_key,product_name,category,unit_cost,unit_price
+1,Headphones 1,Electronics,117.22,215.98
+2,Headphones 2,Electronics,129.5,283.79
+3,Headphones 3,Electronics,18.66,47.89
+4,Headphones 4,Electronics,115.37,266.63
+5,Headphones 5,Electronics,23.58,43.81
+6,Headphones 6,Electronics,58.77,146.98
+7,Headphones 7,Electronics,98.36,232.2
+8,Headphones 8,Electronics,69.3,107.88
+9,Laptop Sleeve 1,Electronics,85.41,114.13
+10,Laptop Sleeve 2,Electronics,125.01,262.86
+11,Laptop Sleeve 3,Electronics,114.92,198.66
+12,Laptop Sleeve 4,Electronics,145.75,357.92
+13,Laptop Sleeve 5,Electronics,117.87,178.3
+14,Laptop Sleeve 6,Electronics,72.67,95.14
+15,Laptop Sleeve 7,Electronics,27.37,59.46
+16,Laptop Sleeve 8,Electronics,112.99,288.82
+17,Smart Watch 1,Electronics,52.24,91.43
+18,Smart Watch 2,Electronics,73.09,110.05
+19,Smart Watch 3,Electronics,23.84,45.11
+20,Smart Watch 4,Electronics,37.9,81.65
+21,Smart Watch 5,Electronics,68.39,162.36
+22,Smart Watch 6,Electronics,106.54,178.1
+23,Smart Watch 7,Electronics,125.68,293.64
+24,Smart Watch 8,Electronics,61.18,100.3
+25,Bluetooth Speaker 1,Electronics,103.96,149.57
+26,Bluetooth Speaker 2,Electronics,33.99,42.82
+27,Bluetooth Speaker 3,Electronics,119.1,255.78
+28,Bluetooth Speaker 4,Electronics,107.25,247.1
+29,Bluetooth Speaker 5,Electronics,71.54,144.36
+30,Bluetooth Speaker 6,Electronics,25.27,35.5
+31,Bluetooth Speaker 7,Electronics,101.92,192.22
+32,Bluetooth Speaker 8,Electronics,86.96,198.51
+33,Webcam 1,Electronics,97.03,193.81
+34,Webcam 2,Electronics,86.09,142.93
+35,Webcam 3,Electronics,9.47,17.42
+36,Webcam 4,Electronics,36.11,65.06
+37,Webcam 5,Electronics,128.74,201.59
+38,Webcam 6,Electronics,13.45,21.93
+39,Webcam 7,Electronics,47.57,101.97
+40,Webcam 8,Electronics,85.77,197.98
+41,Air Fryer 1,Home & Kitchen,101.33,182.25
+42,Air Fryer 2,Home & Kitchen,123.03,181.52
+43,Air Fryer 3,Home & Kitchen,8.29,11.37
+44,Air Fryer 4,Home & Kitchen,109.74,205.61
+45,Air Fryer 5,Home & Kitchen,28.38,54.68
+46,Air Fryer 6,Home & Kitchen,27.09,59.32
+47,Air Fryer 7,Home & Kitchen,69.69,122.96
+48,Air Fryer 8,Home & Kitchen,48.72,102.35
+49,Coffee Maker 1,Home & Kitchen,57.46,78.63
+50,Coffee Maker 2,Home & Kitchen,22.11,56.35
+51,Coffee Maker 3,Home & Kitchen,136.74,300.1
+52,Coffee Maker 4,Home & Kitchen,43.55,111.42
+53,Coffee Maker 5,Home & Kitchen,117.92,261.52
+54,Coffee Maker 6,Home & Kitchen,70.16,113.48
+55,Coffee Maker 7,Home & Kitchen,18.98,46.84
+56,Coffee Maker 8,Home & Kitchen,71.09,108.28
+57,Cookware Set 1,Home & Kitchen,49.36,100.3
+58,Cookware Set 2,Home & Kitchen,30.63,73.71
+59,Cookware Set 3,Home & Kitchen,114.99,255.41
+60,Cookware Set 4,Home & Kitchen,67.65,141.86
+61,Cookware Set 5,Home & Kitchen,89.69,190.81
+62,Cookware Set 6,Home & Kitchen,17.24,31.24
+63,Cookware Set 7,Home & Kitchen,11.03,21.15
+64,Cookware Set 8,Home & Kitchen,52.83,76.34
+65,Blender 1,Home & Kitchen,19.99,40.85
+66,Blender 2,Home & Kitchen,29.74,74.31
+67,Blender 3,Home & Kitchen,89.25,153.36
+68,Blender 4,Home & Kitchen,90.68,116.15
+69,Blender 5,Home & Kitchen,143.99,273.74
+70,Blender 6,Home & Kitchen,118.5,161.36
+71,Blender 7,Home & Kitchen,75.57,144.52
+72,Blender 8,Home & Kitchen,140.98,285.05
+73,Vacuum 1,Home & Kitchen,73.66,118.62
+74,Vacuum 2,Home & Kitchen,53.08,103.66
+75,Vacuum 3,Home & Kitchen,68.64,87.81
+76,Vacuum 4,Home & Kitchen,124.81,307.02
+77,Vacuum 5,Home & Kitchen,25.34,50.62
+78,Vacuum 6,Home & Kitchen,20.74,44.75
+79,Vacuum 7,Home & Kitchen,45.78,97.98
+80,Vacuum 8,Home & Kitchen,110.41,252.59
+81,T-Shirt 1,Apparel,20.62,51.28
+82,T-Shirt 2,Apparel,38.38,49.91
+83,T-Shirt 3,Apparel,85.45,149.61
+84,T-Shirt 4,Apparel,125.32,293.39
+85,T-Shirt 5,Apparel,50.99,129.32
+86,T-Shirt 6,Apparel,47.18,91.79
+87,T-Shirt 7,Apparel,42.11,105.86
+88,T-Shirt 8,Apparel,28.87,37.84
+89,Jeans 1,Apparel,68.09,176.33
+90,Jeans 2,Apparel,134.29,303.59
+91,Jeans 3,Apparel,134.16,329.53
+92,Jeans 4,Apparel,80.23,134.51
+93,Jeans 5,Apparel,116.94,250.63
+94,Jeans 6,Apparel,59.18,81.52
+95,Jeans 7,Apparel,113.28,181.74
+96,Jeans 8,Apparel,140.84,221.86
+97,Jacket 1,Apparel,22.8,54.08
+98,Jacket 2,Apparel,27.23,40.62
+99,Jacket 3,Apparel,91.91,223.4
+100,Jacket 4,Apparel,33.48,55.88
+101,Jacket 5,Apparel,117.72,301.6
+102,Jacket 6,Apparel,77.61,112.09
+103,Jacket 7,Apparel,7.02,10.95
+104,Jacket 8,Apparel,24.11,52.2
+105,Sneakers 1,Apparel,22.67,43.83
+106,Sneakers 2,Apparel,105.67,214.98
+107,Sneakers 3,Apparel,33.97,79.33
+108,Sneakers 4,Apparel,108.73,244.39
+109,Sneakers 5,Apparel,24.0,34.01
+110,Sneakers 6,Apparel,139.5,249.24
+111,Sneakers 7,Apparel,48.64,92.88
+112,Sneakers 8,Apparel,101.12,256.84
+113,Cap 1,Apparel,46.53,116.27
+114,Cap 2,Apparel,8.6,17.21
+115,Cap 3,Apparel,96.93,135.01
+116,Cap 4,Apparel,25.35,46.03
+117,Cap 5,Apparel,145.1,298.14
+118,Cap 6,Apparel,140.29,327.7
+119,Cap 7,Apparel,72.77,168.06
+120,Cap 8,Apparel,7.59,10.6
+121,Moisturizer 1,Beauty,125.27,291.33
+122,Moisturizer 2,Beauty,38.73,76.17
+123,Moisturizer 3,Beauty,92.87,224.89
+124,Moisturizer 4,Beauty,92.45,167.06
+125,Moisturizer 5,Beauty,59.26,108.14
+126,Moisturizer 6,Beauty,99.53,240.97
+127,Moisturizer 7,Beauty,70.82,112.21
+128,Moisturizer 8,Beauty,39.32,88.74
+129,Shampoo 1,Beauty,123.4,171.79
+130,Shampoo 2,Beauty,14.65,30.07
+131,Shampoo 3,Beauty,26.2,61.91
+132,Shampoo 4,Beauty,50.0,72.21
+133,Shampoo 5,Beauty,138.54,204.14
+134,Shampoo 6,Beauty,46.28,67.45
+135,Shampoo 7,Beauty,21.75,27.8
+136,Shampoo 8,Beauty,13.03,19.36
+137,Perfume 1,Beauty,12.74,26.09
+138,Perfume 2,Beauty,103.7,184.74
+139,Perfume 3,Beauty,51.11,98.7
+140,Perfume 4,Beauty,131.88,316.37
+141,Perfume 5,Beauty,11.3,16.9
+142,Perfume 6,Beauty,39.33,62.4
+143,Perfume 7,Beauty,87.83,159.14
+144,Perfume 8,Beauty,12.14,21.3
+145,Lipstick 1,Beauty,80.94,112.29
+146,Lipstick 2,Beauty,125.85,166.14
+147,Lipstick 3,Beauty,139.1,192.49
+148,Lipstick 4,Beauty,127.32,314.3
+149,Lipstick 5,Beauty,147.04,343.0
+150,Lipstick 6,Beauty,118.02,249.9
+151,Lipstick 7,Beauty,117.95,168.87
+152,Lipstick 8,Beauty,82.73,160.84
+153,Sunscreen 1,Beauty,129.35,242.5
+154,Sunscreen 2,Beauty,60.84,128.58
+155,Sunscreen 3,Beauty,43.64,62.78
+156,Sunscreen 4,Beauty,74.29,134.68
+157,Sunscreen 5,Beauty,38.72,67.62
+158,Sunscreen 6,Beauty,58.13,98.36
+159,Sunscreen 7,Beauty,60.02,130.59
+160,Sunscreen 8,Beauty,48.05,121.61
+161,Yoga Mat 1,Sporting Goods,137.87,261.85
+162,Yoga Mat 2,Sporting Goods,52.61,103.8
+163,Yoga Mat 3,Sporting Goods,128.04,272.86
+164,Yoga Mat 4,Sporting Goods,121.64,239.52
+165,Yoga Mat 5,Sporting Goods,96.77,158.61
+166,Yoga Mat 6,Sporting Goods,111.56,169.93
+167,Yoga Mat 7,Sporting Goods,105.75,255.06
+168,Yoga Mat 8,Sporting Goods,24.15,50.23
+169,Dumbbell Set 1,Sporting Goods,18.79,41.89
+170,Dumbbell Set 2,Sporting Goods,17.25,43.36
+171,Dumbbell Set 3,Sporting Goods,24.92,63.42
+172,Dumbbell Set 4,Sporting Goods,121.13,248.49
+173,Dumbbell Set 5,Sporting Goods,118.48,275.28
+174,Dumbbell Set 6,Sporting Goods,142.17,226.35
+175,Dumbbell Set 7,Sporting Goods,90.56,124.82
+176,Dumbbell Set 8,Sporting Goods,94.34,139.75
+177,Running Shoes 1,Sporting Goods,86.92,175.82
+178,Running Shoes 2,Sporting Goods,72.57,141.91
+179,Running Shoes 3,Sporting Goods,115.77,269.62
+180,Running Shoes 4,Sporting Goods,76.36,157.26
+181,Running Shoes 5,Sporting Goods,140.03,197.67
+182,Running Shoes 6,Sporting Goods,21.98,30.08
+183,Running Shoes 7,Sporting Goods,100.39,182.22
+184,Running Shoes 8,Sporting Goods,117.28,252.87
+185,Water Bottle 1,Sporting Goods,53.38,131.46
+186,Water Bottle 2,Sporting Goods,115.57,186.67
+187,Water Bottle 3,Sporting Goods,57.81,96.8
+188,Water Bottle 4,Sporting Goods,27.85,40.37
+189,Water Bottle 5,Sporting Goods,140.74,259.12
+190,Water Bottle 6,Sporting Goods,60.58,135.4
+191,Water Bottle 7,Sporting Goods,85.18,214.13
+192,Water Bottle 8,Sporting Goods,118.14,224.14
+193,Bike Helmet 1,Sporting Goods,59.57,153.81
+194,Bike Helmet 2,Sporting Goods,109.08,276.41
+195,Bike Helmet 3,Sporting Goods,22.18,53.19
+196,Bike Helmet 4,Sporting Goods,97.38,137.75
+197,Bike Helmet 5,Sporting Goods,90.3,196.51
+198,Bike Helmet 6,Sporting Goods,6.78,12.64
+199,Bike Helmet 7,Sporting Goods,124.68,205.57
+200,Bike Helmet 8,Sporting Goods,71.49,132.05
+201,Notebook 1,Office Supplies,48.78,121.46
+202,Notebook 2,Office Supplies,118.29,165.52
+203,Notebook 3,Office Supplies,149.57,364.49
+204,Notebook 4,Office Supplies,46.17,109.87
+205,Notebook 5,Office Supplies,20.43,53.1
+206,Notebook 6,Office Supplies,101.52,216.01
+207,Notebook 7,Office Supplies,18.11,44.58
+208,Notebook 8,Office Supplies,9.2,14.5
+209,Desk Organizer 1,Office Supplies,25.74,59.16
+210,Desk Organizer 2,Office Supplies,33.74,83.65
+211,Desk Organizer 3,Office Supplies,100.16,130.09
+212,Desk Organizer 4,Office Supplies,5.79,7.64
+213,Desk Organizer 5,Office Supplies,92.86,216.55
+214,Desk Organizer 6,Office Supplies,39.59,94.89
+215,Desk Organizer 7,Office Supplies,13.3,31.0
+216,Desk Organizer 8,Office Supplies,139.53,319.85
+217,Pen Set 1,Office Supplies,106.23,252.96
+218,Pen Set 2,Office Supplies,10.82,16.48
+219,Pen Set 3,Office Supplies,23.11,44.64
+220,Pen Set 4,Office Supplies,113.05,237.47
+221,Pen Set 5,Office Supplies,128.41,187.43
+222,Pen Set 6,Office Supplies,111.52,168.46
+223,Pen Set 7,Office Supplies,44.26,97.74
+224,Pen Set 8,Office Supplies,147.13,305.38
+225,Monitor Stand 1,Office Supplies,12.9,26.86
+226,Monitor Stand 2,Office Supplies,11.14,27.22
+227,Monitor Stand 3,Office Supplies,107.89,160.08
+228,Monitor Stand 4,Office Supplies,18.3,27.41
+229,Monitor Stand 5,Office Supplies,147.1,274.95
+230,Monitor Stand 6,Office Supplies,118.69,250.34
+231,Monitor Stand 7,Office Supplies,88.0,127.24
+232,Monitor Stand 8,Office Supplies,142.17,235.55
+233,Backpack 1,Office Supplies,88.81,194.92
+234,Backpack 2,Office Supplies,99.14,249.81
+235,Backpack 3,Office Supplies,26.52,51.36
+236,Backpack 4,Office Supplies,63.58,120.18
+237,Backpack 5,Office Supplies,22.29,31.89
+238,Backpack 6,Office Supplies,45.32,75.29
+239,Backpack 7,Office Supplies,67.05,139.11
+240,Backpack 8,Office Supplies,97.02,175.21
