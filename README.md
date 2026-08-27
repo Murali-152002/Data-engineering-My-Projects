@@ -48,20 +48,16 @@ performance improvement" figure is based on.
 
 ---
 
-## Implementation notes
+**3. [Orders Lakehouse: ADF + Delta Lake + dbt + Airflow](./orders-lakehouse-adf-dbt-airflow)**
 
-Both projects were developed and tested locally without live Azure
-resources (no Databricks workspace, no ADF instance, no Azure SQL
-Database). Where that mattered, each project's README documents the local
-substitution used, why, and how it maps back to the real Azure service.
-The design decisions themselves — medallion architecture, MERGE-based
-incremental loads, watermark patterns, indexing strategy — are the same
-ones used in production Azure data platforms.
-
-**3. Orders Lakehouse: ADF + Databricks/Delta Lake + dbt + Airflow**
-
-**Stack: Azure Data Factory, Delta Lake, dbt, Airflow**
+**Stack:** Azure Data Factory, Delta Lake, dbt, Airflow
 
 A parameterized, incremental ADF pipeline (Lookup + Until-loop pagination) ingesting a REST API into a Delta Lake bronze layer, transformed into a dbt star-schema mart (fct_orders + 3 dimensions, 19 tests, generated lineage docs), with the dbt run orchestrated by a dedicated Airflow DAG.
 
-Why this design: ADF already owns ingestion end-to-end on its own trigger — stacking Airflow on the same job would just duplicate it. Splitting responsibilities (ADF for source-to-lake ingestion, Airflow for orchestrating the downstream dbt run) mirrors how a lot of enterprises actually pair the two tools. See the project orders-lakehouse-adf-dbt-airflow/README.md for the full architecture, the idempotency proof, and the local-substitution table.
+Why this design: ADF already owns ingestion end-to-end on its own trigger — stacking Airflow on the same job would just duplicate it. Splitting responsibilities (ADF for source-to-lake ingestion, Airflow for orchestrating the downstream dbt run) mirrors how a lot of enterprises actually pair the two tools. See the [project README](./orders-lakehouse-adf-dbt-airflow/README.md) for the full architecture, the idempotency proof, and the local-substitution table.
+
+---
+
+## Implementation notes
+
+All three projects were developed and tested locally without live Azure resources (no Databricks workspace, no ADF instance, no Azure SQL Database). Where that mattered, each project's README documents the local substitution used, why, and how it maps back to the real Azure service. The design decisions themselves — medallion architecture, MERGE-based incremental loads, watermark patterns, indexing strategy — are the same ones used in production Azure data platforms.
