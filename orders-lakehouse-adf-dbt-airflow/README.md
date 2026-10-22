@@ -1,42 +1,56 @@
-# Orders Lakehouse: ADF + Databricks/Delta Lake + dbt + Airflow
+# Orders Lakehouse + LLM Assistant
 
-An incremental, API-sourced ingestion pipeline (Azure Data Factory, designed
-from scratch) landing into a Delta Lake bronze layer, transformed into a
-star-schema mart entirely in dbt (dbt-databricks-style modeling, real tests,
-docs/lineage), with the dbt run orchestrated by Airflow. Built to close a
-specific gap: prior projects proved production Databricks/PySpark work and an
-ADF-to-SQL pipeline, but never an ADF pipeline **designed from scratch**
-(parameterized, incremental, idempotent) or a dbt/Airflow-based
-transformation layer - both real, common pieces of a modern data platform
-that weren't demonstrated yet.
+An incremental REST-API pipeline: Azure Data Factory pipeline-as-code lands paginated JSON, Delta Lake holds the
+bronze layer, dbt builds a star-schema mart, Airflow orchestrates the dbt run, and a local-LLM assistant answers
+questions about the pipeline through four read-only, guarded tools.
+
+> **Data and runtime:** the source is a mock Flask orders API (400-700 orders/day, 30 days seeded) and everything runs
+> locally. Azure services are represented by the ADF pipeline JSON in `adf/` plus the local stand-ins listed below.
+> No live Azure subscription was used.
 
 ## Architecture
 
+```mermaid
+flowchart LR
+    subgraph SRC["Source (mock)"]
+        API["Orders REST API<br/>Flask, paginated<br/>modified_at watermark"]
+    end
+    subgraph ING["Ingestion: ADF pipeline JSON, simulated locally"]
+        TRG["Hourly tumbling-window trigger<br/>retry x3, 300s"] --> L["Lookup last watermark<br/>control/watermark.json"] --> U["Until loop: land JSON pages<br/>page size 200"] --> W["Advance watermark<br/>only if every page succeeded"]
+    end
+    LZ["Landing zone<br/>JSON files by run_date"]
+    BR["Bronze Delta table<br/>append-only, source file tracked"]
+    subgraph TRN["Transform: dbt on DuckDB"]
+        ST["stg_orders view<br/>type-cast, latest record wins"] --> M["Marts: fct_orders, dim_customer,<br/>dim_product, dim_date<br/>19 dbt tests + lineage docs"]
+    end
+    AF["Airflow DAG<br/>sensor, land to bronze, dbt run,<br/>dbt test, failure alert"]
+    subgraph ASK["LLM assistant (Ollama, local)"]
+        AG["Tool-calling loop<br/>max 6 steps"] --> TL["4 read-only tools<br/>schema, SELECT-only SQL,<br/>dbt results, watermark"]
+    end
+    API --> U
+    U --> LZ --> BR --> ST
+    AF -. orchestrates .-> BR
+    AF -. orchestrates .-> M
+    TL -. reads .-> M
+    TL -. reads .-> W
 ```
-Internal Orders REST API (mock_orders_api.py)
-        │  paginated, modified_at watermark filter
-        ▼
-Azure Data Factory  (adf/pipeline_IncrementalOrdersIngestion.json)
-  Lookup last watermark → Until-loop pagination → land JSON pages
-  → advance watermark ONLY if every page succeeded (idempotent-by-construction)
-        │
-        ▼
-Landing zone (ADLS Gen2, simulated as ./landing/)
-        │
-        ▼
-Databricks / Delta Lake bronze layer  (ingestion/land_to_bronze.py)
-  raw, minimally-typed, append-only, file-tracked idempotent ingestion
-        │
-        ▼
-dbt  (dbt_project/)                        ◄── orchestrated by
-  staging: type-cast, dedupe (latest        Airflow (orchestration/dags/
-  wins), drop unjoinable rows                dbt_orchestration_dag.py)
-  marts: dim_customer, dim_product,          sensor → land_to_bronze → dbt run
-  dim_date, fct_orders (star schema)         → dbt test → mark success
-  19 dbt tests: not_null / unique /
-  relationships, dbt docs generate for
-  lineage
-```
+
+## What each layer proves
+
+| Layer | Tool | How it is checked |
+|---|---|---|
+| Incremental ingestion | ADF pipeline JSON + local simulation | `tests/test_ingestion.py`: full pagination, rerun pulls 0 rows, watermark unchanged after a mid-page failure, status updates caught |
+| Bronze | Delta Lake (delta-rs) | file tracking makes `land_to_bronze.py` safe to call twice |
+| Transform | dbt (DuckDB) | 19 tests: primary keys, not-null, fact-to-dimension relationships |
+| Orchestration | Airflow | `airflow dags test orders_dbt_orchestration` |
+| LLM assistant | Ollama + 4 tools | `tests/test_assistant.py`: DROP/DELETE/multi-statement SQL refused, read-only connection, 50-row cap, step limit |
+
+## Known limitations
+
+- Mock API and synthetic orders, not real business data.
+- dbt runs on DuckDB over the Delta files, not a Databricks SQL warehouse.
+- No CI pipeline yet; tests run locally with `pytest`.
+- The assistant is a single tool-calling loop over one local warehouse, and answer quality depends on the local model.
 
 ## Why Airflow orchestrates dbt specifically, not ingestion
 
@@ -107,6 +121,7 @@ dbt run && dbt test && dbt docs generate
 
 # 5. Run the whole thing as one Airflow DAG
 cd ..
+export PROJECT_ROOT=$(pwd)
 export AIRFLOW_HOME=./orchestration/airflow_home
 airflow db migrate
 cp orchestration/dags/dbt_orchestration_dag.py $AIRFLOW_HOME/dags/
@@ -128,3 +143,37 @@ rather than fabricating a customer/product source that doesn't exist here.
 19 dbt tests cover primary-key uniqueness/not-null on every model and
 referential integrity (`relationships`) from `fct_orders` to all three
 dimensions.
+
+## Pipeline Run Assistant (LLM + tools over the lakehouse)
+
+A small tool-calling assistant that answers plain-English questions about the
+pipeline ("how many orders per status?", "did the last dbt run pass?",
+"how far has ingestion advanced?") using a **local** LLM through Ollama. No API
+key is needed and nothing leaves the machine.
+
+The model never touches the warehouse itself. It can only call four
+read-only tools (`assistant/tools.py`):
+
+| Tool | What it does |
+|---|---|
+| `describe_tables` | lists marts and columns so the model writes valid SQL |
+| `run_sql` | one SELECT/WITH query, max 50 rows, DuckDB opened `read_only=True` |
+| `last_dbt_run` | summarises `dbt_project/target/run_results.json`, including failed tests |
+| `ingestion_status` | reads `control/watermark.json` |
+
+Guardrails (all covered by `tests/test_assistant.py`, which uses a scripted fake
+model, so no LLM is needed to run them): DROP/DELETE/INSERT/COPY and
+multi-statement queries are refused, the connection is read-only, results are
+capped at 50 rows, a refused query is returned to the model as an error instead
+of crashing the loop, and the loop stops after 6 steps. Every tool call is
+printed so an answer can be checked against the query that produced it.
+
+```bash
+# after the dbt steps above have built warehouse/orders_intelligence.duckdb
+ollama pull llama3.1
+python3 -m assistant.agent "How many orders do we have per status?"
+pytest tests/test_assistant.py -v
+```
+
+Limits: this is a single-agent tool loop over one local warehouse, not a
+production agent platform. Answer quality depends on the local model.

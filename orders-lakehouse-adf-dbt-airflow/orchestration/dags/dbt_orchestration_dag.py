@@ -19,10 +19,13 @@ from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from airflow.sensors.python import PythonSensor
 
-PROJECT_ROOT = "/tmp/proj"
+import os
+
+# Set PROJECT_ROOT to the repo folder (see README); falls back to the current directory.
+PROJECT_ROOT = os.environ.get("PROJECT_ROOT", os.getcwd())
 DBT_DIR = f"{PROJECT_ROOT}/dbt_project"
 DBT_ENV = {
-    "PATH": "/sessions/happy-exciting-einstein/.local/bin:/usr/local/bin:/usr/bin:/bin",
+    "PATH": os.environ.get("PATH", "/usr/local/bin:/usr/bin:/bin"),
     "DBT_PROFILES_DIR": f"{DBT_DIR}/profiles",
     "BRONZE_ORDERS_PATH": f"{PROJECT_ROOT}/warehouse/bronze_orders",
     "SPARK_LOCAL_IP": "127.0.0.1",

@@ -24,21 +24,21 @@ local_demo/   A runnable, engine-agnostic proof of the cleaning logic and
 
 ## Pipeline design
 
-```
-Blob Storage (landing/sales/*.csv)
-        │
-        ▼
-  LookupOldWatermark  ──►  LookupNewWatermark  ──►  CopyNewSalesRowsToStaging
-  (dw.etl_watermark)       (source file listing)     (Copy Activity, retry x3)
-                                                              │
-                                                              ▼
-                                                  MergeStagingIntoFactSales
-                                                  (dw.usp_MergeSalesStaging)
-                                                              │
-                                                              ▼
-                                                       UpdateWatermark
-                                            (any failure → SendFailureAlert,
-                                             webhook to a Logic App/Teams channel)
+```mermaid
+flowchart LR
+    B["Blob Storage<br/>landing/sales/*.csv"] --> LW
+    subgraph ADFP["ADF pipeline"]
+        LW["LookupOldWatermark"] --> LN["LookupNewWatermark"] --> C["CopyNewSalesRowsToStaging<br/>retry x3"] --> M["MergeStagingIntoFactSales<br/>usp_MergeSalesStaging"] --> UW["UpdateWatermark"]
+    end
+    WT[("watermark table")] -. read .-> LW
+    UW -. write .-> WT
+    C --> STG[("Azure SQL staging table")]
+    STG --> M
+    M -. bad rows .-> REJ[("dw.etl_rejected_rows<br/>null CustomerID")]
+    C -. failure .-> A["SendFailureAlert"]
+    M -. failure .-> A
+    M --> F[("dw.fact_sales<br/>star schema, indexed")]
+    F --> RPT["Reporting queries<br/>by CustomerID and OrderDate"]
 ```
 
 This is the standard ADF watermark-based incremental-copy pattern: only
@@ -81,12 +81,10 @@ pip install -r requirements.txt
 python run_all.py --days 40   # generates ~250K rows, loads them, benchmarks
 ```
 
-In local testing at ~250K rows, dropping the two indexes and re-running the
-same customer drill-down and date-range queries showed 88-99% faster query
-times with the indexes present. The ~30% figure quoted for this project is
-a deliberately conservative estimate rather than the measured local
-ceiling, since real-world Azure SQL performance depends on data volume,
-cardinality, and cache state that this local proxy can't fully replicate.
+In local testing at ~250K rows, dropping the two indexes and re-running the same customer drill-down and
+date-range queries made them 88-99% slower than with the indexes present. SQLite is not Azure SQL, so read this as
+evidence that the index columns match the query patterns, not as an Azure benchmark. Real performance depends on data
+volume, cardinality and cache state.
 
 Run `pytest tests/ -v` inside `local_demo/` for the cleaning-logic test
 suite (null handling, dedup, type coercion, idempotent re-run).

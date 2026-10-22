@@ -15,14 +15,32 @@ Two sources land daily:
 The pipeline ingests both, cleans and standardizes the data, and loads it
 into a star schema:
 
-```
-Bronze (raw, append-only)  →  Silver (cleaned, typed, deduplicated)  →  Gold (star schema)
-
-sample_data/landing/*.csv ─┐
-                            ├─→ bronze_sales_transactions ─→ silver_sales_transactions ─→ fact_sales
-operational_source.db ─────┘        bronze_customers ─→ silver_customers ─→ dim_customer
-                                     bronze_products  ─→ silver_products  ─→ dim_product
-                                                                              dim_date (derived)
+```mermaid
+flowchart LR
+    subgraph SRC["Sources"]
+        CSV["CSV drops (landing zone)<br/>~120K-150K sales rows/day"]
+        DB["Operational DB<br/>customers, products"]
+    end
+    subgraph BRONZE["Bronze: raw, append-only"]
+        BS["bronze_sales_transactions<br/>incremental, file-tracked"]
+        BR["bronze_customers, bronze_products<br/>full snapshot each run"]
+    end
+    subgraph SILVER["Silver: cleaned and typed"]
+        SS["silver_sales_transactions<br/>null CustomerID dropped<br/>dedup on TransactionID<br/>types coerced"]
+        SR["silver_customers, silver_products"]
+    end
+    subgraph GOLD["Gold: star schema"]
+        F["fact_sales<br/>Delta MERGE upsert"]
+        D1["dim_customer, dim_product, dim_date"]
+    end
+    CSV --> BS --> SS --> F
+    DB --> BR --> SR --> D1
+    D1 --- F
+    ORCH["pipeline_orchestrator.py<br/>retry with backoff per stage"] -.-> BRONZE
+    ORCH -.-> SILVER
+    ORCH -.-> GOLD
+    ORCH -. unrecoverable failure .-> ALERT["Stop run and log alert<br/>stands in for Azure Monitor"]
+    F --> BENCH["Z-order benchmark and<br/>Delta time-travel demo"]
 ```
 
 - **Bronze**: lands raw data with minimal processing. Sales CSVs are ingested
