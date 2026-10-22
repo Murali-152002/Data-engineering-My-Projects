@@ -4,7 +4,7 @@ Three batch data pipelines built around the Azure data stack: incremental loadin
 modeling, dbt, Airflow, and a local-LLM assistant. Each project has an architecture diagram, a test suite and exact
 commands to run it.
 
-Contact: anumandlamuralidharreddy@gmail.com | [LinkedIn](https://www.linkedin.com/in/anumandla-muralidhar-reddy-070576241)
+Contact: anumandlamuralidharreddy@gmail.com | [LinkedIn](https://www.linkedin.com/in/muralidhar-reddy-anumandla-070576241)
 
 > **Read this first:** the data is synthetic or mocked and everything runs locally. Azure services are represented by
 > pipeline-as-code (ADF JSON, T-SQL) and local stand-ins, which each project README maps back to the real service.
