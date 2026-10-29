@@ -1,0 +1,19 @@
+{
+  "note": "Rule v1 quarantined fare<0 OR total<0. Profiling quarantine by payment_type showed ~2.0M of 2.85M were payment_type 0 (flex fare) rows with negative fare but positive total. v2 quarantines total<0 only and flags negative fare.",
+  "v1_total_quarantined": 2858189,
+  "v1_negative_amount_by_payment_type": {
+    "0": 2047090,
+    "4": 514157,
+    "2": 191003,
+    "3": 100205,
+    "1": 1139
+  },
+  "v2_total_quarantined": 978679,
+  "v2_negative_total_by_payment_type": {
+    "4": 514156,
+    "2": 191003,
+    "0": 167218,
+    "3": 100205,
+    "1": 1139
+  }
+}

@@ -1,0 +1,34 @@
+version: 2
+models:
+  - name: stg_trips
+    columns:
+      - {name: trip_id, tests: [not_null]}
+      - {name: pickup_date, tests: [not_null]}
+      - {name: fare_amount, tests: [not_null]}
+  - name: stg_zones
+    columns:
+      - {name: location_id, tests: [unique, not_null]}
+  - name: stg_weather
+    columns:
+      - {name: weather_date, tests: [unique, not_null]}
+  - name: dim_zone
+    columns:
+      - {name: location_id, tests: [unique, not_null]}
+  - name: dim_date
+    columns:
+      - {name: date_key, tests: [unique, not_null]}
+      - {name: weather_band, tests: [{accepted_values: {values: ['dry', 'drizzle', 'rain', 'snow']}}]}
+  - name: fct_trips_hourly
+    columns:
+      - {name: pu_location_id, tests: [not_null, {relationships: {to: ref('dim_zone'), field: location_id}}]}
+      - {name: pickup_date, tests: [not_null, {relationships: {to: ref('dim_date'), field: date_key}}]}
+      - {name: trips, tests: [not_null]}
+  - name: mart_weather_demand
+    columns:
+      - {name: avg_trips_per_day, tests: [not_null]}
+  - name: mart_zone_performance
+    columns:
+      - {name: zone, tests: [not_null]}
+  - name: mart_monthly_summary
+    columns:
+      - {name: month, tests: [unique, not_null]}

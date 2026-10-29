@@ -1,0 +1,9 @@
+name: nyc_mobility
+version: "1.0"
+profile: nyc_mobility
+model-paths: ["models"]
+test-paths: ["tests"]
+models:
+  nyc_mobility:
+    staging: {+materialized: view}
+    marts: {+materialized: table}

@@ -1,0 +1,8 @@
+data_raw/*.csv
+data_raw/*.CSV
+lake/
+__pycache__/
+.pytest_cache/
+dbt_project/target/
+dbt_project/logs/
+*.duckdb

@@ -1,0 +1,9 @@
+is_weekend,weather_band,days,avg_trips_per_day,avg_revenue_per_trip,tip_pct_of_fare,avg_trip_minutes
+false,drizzle,32,135670.0,28.62,15.73,18.03
+false,dry,179,128356.0,28.37,15.66,17.69
+false,rain,44,137491.0,28.23,15.44,18.12
+false,snow,6,112743.0,26.43,16.51,15.61
+true,drizzle,11,143652.0,27.28,13.55,16.81
+true,dry,65,128396.0,27.23,13.71,16.36
+true,rain,20,138129.0,26.88,13.73,16.39
+true,snow,8,126517.0,25.99,13.4,14.54

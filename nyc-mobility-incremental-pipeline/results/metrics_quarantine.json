@@ -1,0 +1,34 @@
+{
+  "report": {
+    "total": 978679,
+    "by_primary_reason": {
+      "negative_total_amount": 973662,
+      "dropoff_before_pickup": 2235,
+      "distance_out_of_range": 2192,
+      "duration_over_24h": 352,
+      "pickup_outside_file_month": 214,
+      "duplicate_trip_key": 24
+    },
+    "negative_total_amount_by_payment_type": {
+      "4": 514156,
+      "2": 191003,
+      "0": 167218,
+      "3": 100205,
+      "1": 1139
+    },
+    "negative_total_amount_by_month": {
+      "2025-01": 63037,
+      "2025-02": 55179,
+      "2025-03": 68686,
+      "2025-04": 72608,
+      "2025-05": 112544,
+      "2025-06": 74257,
+      "2025-07": 76455,
+      "2025-08": 87940,
+      "2025-09": 78492,
+      "2025-10": 108735,
+      "2025-11": 126919,
+      "2025-12": 48869
+    }
+  }
+}

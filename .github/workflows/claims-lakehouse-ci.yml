@@ -1,0 +1,38 @@
+name: claims-lakehouse-ci
+on:
+  push:
+    paths: ["claims-lakehouse-cms-delta-dbt/**", ".github/workflows/claims-lakehouse-ci.yml"]
+  pull_request:
+    paths: ["claims-lakehouse-cms-delta-dbt/**"]
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: claims-lakehouse-cms-delta-dbt
+    env:
+      CL_RAW: ${{ github.workspace }}/claims-lakehouse-cms-delta-dbt/data_sample
+      CL_LAKE: ${{ runner.temp }}/lake
+      CL_RESULTS: ${{ runner.temp }}/results
+      SPARK_LOCAL_IP: 127.0.0.1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: "11"}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.10", cache: pip, cache-dependency-path: claims-lakehouse-cms-delta-dbt/requirements.txt}
+      - run: pip install -r requirements.txt
+      - name: Unit tests (validation rules)
+        run: python -m pytest tests -q
+      - name: Bronze and silver on the real-data sample (1,500 rows per file)
+        run: |
+          for ds in inpatient partd; do python src/bronze.py $ds; python src/silver.py $ds; done
+      - name: Re-run silver (Delta MERGE must be idempotent)
+        run: |
+          for ds in inpatient partd; do python src/silver.py $ds; done
+          python src/verify.py
+      - name: dbt build (models + data tests)
+        working-directory: claims-lakehouse-cms-delta-dbt/dbt_project
+        env:
+          DBT_PROFILES_DIR: .
+        run: dbt build

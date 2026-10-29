@@ -1,0 +1,40 @@
+version: 2
+models:
+  - name: stg_inpatient
+    columns:
+      - {name: provider_ccn, tests: [not_null]}
+      - {name: drg_code, tests: [not_null]}
+  - name: dim_provider
+    columns:
+      - {name: provider_ccn, tests: [unique, not_null]}
+      - {name: state, tests: [not_null]}
+  - name: dim_drg
+    columns:
+      - {name: drg_code, tests: [unique, not_null]}
+      - {name: drg_desc, tests: [not_null]}
+  - name: fct_inpatient
+    columns:
+      - {name: provider_ccn, tests: [not_null, {relationships: {to: ref('dim_provider'), field: provider_ccn}}]}
+      - {name: drg_code, tests: [not_null, {relationships: {to: ref('dim_drg'), field: drg_code}}]}
+      - {name: total_discharges, tests: [not_null]}
+      - {name: avg_total_payment, tests: [not_null]}
+  - name: mart_state_drg_payments
+    columns:
+      - {name: weighted_avg_total_payment, tests: [not_null]}
+  - name: mart_provider_cost_index
+    columns:
+      - {name: provider_ccn, tests: [unique, not_null]}
+  - name: stg_partd
+    columns:
+      - {name: npi, tests: [unique, not_null]}
+  - name: dim_prescriber
+    columns:
+      - {name: npi, tests: [unique, not_null]}
+      - {name: specialty, tests: [not_null]}
+  - name: fct_prescribing
+    columns:
+      - {name: npi, tests: [not_null, {relationships: {to: ref('dim_prescriber'), field: npi}}]}
+      - {name: tot_clms, tests: [not_null]}
+  - name: mart_specialty_prescribing
+    columns:
+      - {name: specialty, tests: [unique, not_null]}

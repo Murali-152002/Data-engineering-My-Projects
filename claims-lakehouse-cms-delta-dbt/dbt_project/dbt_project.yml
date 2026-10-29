@@ -1,0 +1,9 @@
+name: claims_lakehouse
+version: "1.0"
+profile: claims_lakehouse
+model-paths: ["models"]
+test-paths: ["tests"]
+models:
+  claims_lakehouse:
+    staging: {+materialized: view}
+    marts: {+materialized: table}

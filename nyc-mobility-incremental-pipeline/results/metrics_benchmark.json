@@ -1,0 +1,22 @@
+{
+  "incremental_vs_full": {
+    "months": 12,
+    "full_load_seconds": 936.1,
+    "avg_new_month_seconds": 78.0,
+    "min_month": 44.2,
+    "max_month": 103.8
+  },
+  "partitioning": {
+    "one_day": {
+      "partitioned_s": 0.99,
+      "unpartitioned_s": 0.65,
+      "speedup_x": 0.7
+    },
+    "one_month_by_zone": {
+      "partitioned_s": 0.78,
+      "unpartitioned_s": 0.7,
+      "speedup_x": 0.9
+    },
+    "rows_in_each_layout": 16035272
+  }
+}

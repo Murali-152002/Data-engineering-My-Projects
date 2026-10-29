@@ -1,0 +1,7 @@
+claims_lakehouse:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('CL_LAKE') }}/gold.duckdb"
+      threads: 4

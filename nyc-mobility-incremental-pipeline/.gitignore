@@ -1,0 +1,10 @@
+data_raw/*.parquet
+data_raw/*.csv
+lake/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+dbt_project/target/
+dbt_project/logs/
+*.duckdb

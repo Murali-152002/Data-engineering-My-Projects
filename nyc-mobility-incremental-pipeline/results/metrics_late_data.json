@@ -1,0 +1,18 @@
+{
+  "late_data_test": {
+    "month": "2025-03",
+    "raw_rows": 4145257,
+    "held_out_rows": 20000,
+    "stale_fare_rows": 5000,
+    "silver_after_delivery1": 4056887,
+    "merge_inserted": "19380",
+    "merge_updated": "4938",
+    "silver_after_fix": 4076267,
+    "control_clean_load": 4076267,
+    "rows_differing_from_control": 0,
+    "duplicate_keys": 0,
+    "replay_inserted": "0",
+    "replay_updated": "0",
+    "correction_seconds": 169.3
+  }
+}

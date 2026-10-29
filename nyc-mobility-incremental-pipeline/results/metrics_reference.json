@@ -1,0 +1,8 @@
+{
+  "reference": {
+    "zones": 265,
+    "weather_days": 365,
+    "weather_rejected": 0,
+    "weather_snow_depth_missing": 1
+  }
+}

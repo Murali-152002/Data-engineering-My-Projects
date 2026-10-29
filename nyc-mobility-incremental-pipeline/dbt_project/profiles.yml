@@ -1,0 +1,7 @@
+nyc_mobility:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('NYC_LAKE') }}/gold.duckdb"
+      threads: 4

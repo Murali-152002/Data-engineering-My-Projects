@@ -1,0 +1,38 @@
+{
+  "bronze": {
+    "rows": 145879,
+    "columns": 15,
+    "seconds": 9.1
+  },
+  "silver": {
+    "bronze_rows": 145879,
+    "silver_rows": 145879,
+    "quarantined_rows": 0,
+    "hard_rule_hits": {
+      "null_key": 0,
+      "bad_ccn_format": 0,
+      "bad_zip_format": 0,
+      "non_numeric_metric": 0,
+      "negative_value": 0,
+      "medicare_exceeds_total_payment": 0,
+      "below_cms_suppression_floor": 0,
+      "duplicate_provider_drg": 0
+    },
+    "soft_flag_rows": {
+      "payment_exceeds_charge": 223
+    },
+    "reconciled": true,
+    "write_mode": "merge",
+    "silver_delta_history": [
+      {
+        "version": 1,
+        "operation": "MERGE"
+      },
+      {
+        "version": 0,
+        "operation": "WRITE"
+      }
+    ],
+    "seconds": 20.7
+  }
+}

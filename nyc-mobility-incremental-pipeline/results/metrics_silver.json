@@ -1,0 +1,317 @@
+{
+  "2025-01": {
+    "bronze_rows": 3475226,
+    "silver_rows": 3411903,
+    "quarantine_rows": 63323,
+    "quarantine_reasons": {
+      "distance_out_of_range": 120,
+      "negative_total_amount": 63034,
+      "duration_over_24h": 17,
+      "dropoff_before_pickup": 124,
+      "duration_over_24h,negative_total_amount": 2,
+      "pickup_outside_file_month": 22,
+      "duration_over_24h,distance_out_of_range": 1,
+      "negative_total_amount,distance_out_of_range": 1,
+      "duplicate_trip_key": 2
+    },
+    "reconciles": true,
+    "operation": "WRITE",
+    "merge_inserted": null,
+    "merge_updated": null,
+    "flags": {
+      "flag_zero_distance": 86362,
+      "flag_zero_passengers": 561150,
+      "flag_zero_duration": 1924,
+      "flag_negative_fare": 81382,
+      "flag_fare_outlier": 54
+    },
+    "seconds": 32.9
+  },
+  "2025-02": {
+    "bronze_rows": 3577543,
+    "silver_rows": 3522076,
+    "quarantine_rows": 55467,
+    "quarantine_reasons": {
+      "distance_out_of_range": 148,
+      "negative_total_amount": 55177,
+      "duration_over_24h": 15,
+      "negative_total_amount,distance_out_of_range": 2,
+      "dropoff_before_pickup": 93,
+      "pickup_outside_file_month": 31,
+      "duration_over_24h,distance_out_of_range": 1
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "3522076",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 95839,
+      "flag_zero_passengers": 828453,
+      "flag_zero_duration": 5070,
+      "flag_negative_fare": 127842,
+      "flag_fare_outlier": 40
+    },
+    "seconds": 54.4
+  },
+  "2025-03": {
+    "bronze_rows": 4145257,
+    "silver_rows": 4076267,
+    "quarantine_rows": 68990,
+    "quarantine_reasons": {
+      "duration_over_24h": 11,
+      "negative_total_amount": 68686,
+      "distance_out_of_range": 179,
+      "dropoff_before_pickup": 81,
+      "pickup_outside_file_month": 33
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "0",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 98752,
+      "flag_zero_passengers": 939129,
+      "flag_zero_duration": 22190,
+      "flag_negative_fare": 140413,
+      "flag_fare_outlier": 43
+    },
+    "seconds": 76.9
+  },
+  "2025-04": {
+    "bronze_rows": 3970553,
+    "silver_rows": 3897481,
+    "quarantine_rows": 73072,
+    "quarantine_reasons": {
+      "distance_out_of_range": 267,
+      "negative_total_amount": 72606,
+      "duration_over_24h": 25,
+      "negative_total_amount,distance_out_of_range": 2,
+      "dropoff_before_pickup": 163,
+      "pickup_outside_file_month": 7,
+      "duplicate_trip_key": 2
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "3897481",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 86479,
+      "flag_zero_passengers": 768510,
+      "flag_zero_duration": 34598,
+      "flag_negative_fare": 114383,
+      "flag_fare_outlier": 55
+    },
+    "seconds": 59.2
+  },
+  "2025-05": {
+    "bronze_rows": 4591845,
+    "silver_rows": 4478853,
+    "quarantine_rows": 112992,
+    "quarantine_reasons": {
+      "distance_out_of_range": 297,
+      "negative_total_amount": 112532,
+      "duration_over_24h": 26,
+      "negative_total_amount,distance_out_of_range": 12,
+      "dropoff_before_pickup": 101,
+      "pickup_outside_file_month": 24
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "4478853",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 130880,
+      "flag_zero_passengers": 1185436,
+      "flag_zero_duration": 64164,
+      "flag_negative_fare": 213219,
+      "flag_fare_outlier": 76
+    },
+    "seconds": 69.1
+  },
+  "2025-06": {
+    "bronze_rows": 4322960,
+    "silver_rows": 4248212,
+    "quarantine_rows": 74748,
+    "quarantine_reasons": {
+      "distance_out_of_range": 220,
+      "negative_total_amount": 74255,
+      "duration_over_24h": 19,
+      "dropoff_before_pickup": 231,
+      "duration_over_24h,distance_out_of_range": 1,
+      "pickup_outside_file_month,negative_total_amount": 1,
+      "negative_total_amount,distance_out_of_range": 1,
+      "pickup_outside_file_month": 19,
+      "duplicate_trip_key": 1
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "4248212",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 129670,
+      "flag_zero_passengers": 1234958,
+      "flag_zero_duration": 68332,
+      "flag_negative_fare": 201757,
+      "flag_fare_outlier": 85
+    },
+    "seconds": 63.1
+  },
+  "2025-07": {
+    "bronze_rows": 3898963,
+    "silver_rows": 3822268,
+    "quarantine_rows": 76695,
+    "quarantine_reasons": {
+      "distance_out_of_range": 200,
+      "negative_total_amount": 76453,
+      "duration_over_24h": 30,
+      "negative_total_amount,distance_out_of_range": 1,
+      "dropoff_before_pickup": 1,
+      "duration_over_24h,negative_total_amount": 1,
+      "pickup_outside_file_month": 7,
+      "duplicate_trip_key": 2
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "3822268",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 118815,
+      "flag_zero_passengers": 1059064,
+      "flag_zero_duration": 56044,
+      "flag_negative_fare": 170898,
+      "flag_fare_outlier": 82
+    },
+    "seconds": 62.6
+  },
+  "2025-08": {
+    "bronze_rows": 3574091,
+    "silver_rows": 3485939,
+    "quarantine_rows": 88152,
+    "quarantine_reasons": {
+      "distance_out_of_range": 150,
+      "negative_total_amount": 87933,
+      "duration_over_24h": 44,
+      "negative_total_amount,distance_out_of_range": 5,
+      "dropoff_before_pickup": 2,
+      "duration_over_24h,negative_total_amount": 1,
+      "pickup_outside_file_month,negative_total_amount": 1,
+      "pickup_outside_file_month": 16
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "3485939",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 99487,
+      "flag_zero_passengers": 892964,
+      "flag_zero_duration": 47815,
+      "flag_negative_fare": 173475,
+      "flag_fare_outlier": 103
+    },
+    "seconds": 45.9
+  },
+  "2025-09": {
+    "bronze_rows": 4251015,
+    "silver_rows": 4172320,
+    "quarantine_rows": 78695,
+    "quarantine_reasons": {
+      "distance_out_of_range": 160,
+      "negative_total_amount": 78490,
+      "duration_over_24h": 36,
+      "negative_total_amount,distance_out_of_range": 1,
+      "duration_over_24h,negative_total_amount": 1,
+      "pickup_outside_file_month": 7
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "4172320",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 119049,
+      "flag_zero_passengers": 1089152,
+      "flag_zero_duration": 57168,
+      "flag_negative_fare": 174584,
+      "flag_fare_outlier": 70
+    },
+    "seconds": 60.9
+  },
+  "2025-10": {
+    "bronze_rows": 4428699,
+    "silver_rows": 4319756,
+    "quarantine_rows": 108943,
+    "quarantine_reasons": {
+      "distance_out_of_range": 160,
+      "negative_total_amount": 108725,
+      "duration_over_24h": 32,
+      "negative_total_amount,distance_out_of_range": 7,
+      "pickup_outside_file_month": 13,
+      "duration_over_24h,negative_total_amount": 3,
+      "dropoff_before_pickup": 2,
+      "duplicate_trip_key": 1
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "4319756",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 116075,
+      "flag_zero_passengers": 972721,
+      "flag_zero_duration": 67947,
+      "flag_negative_fare": 212950,
+      "flag_fare_outlier": 53
+    },
+    "seconds": 61.2
+  },
+  "2025-11": {
+    "bronze_rows": 4181444,
+    "silver_rows": 4052932,
+    "quarantine_rows": 128512,
+    "quarantine_reasons": {
+      "distance_out_of_range": 141,
+      "negative_total_amount": 126861,
+      "duration_over_24h": 42,
+      "negative_total_amount,distance_out_of_range": 9,
+      "dropoff_before_pickup": 1386,
+      "dropoff_before_pickup,negative_total_amount": 49,
+      "pickup_outside_file_month": 24
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "4052932",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 99642,
+      "flag_zero_passengers": 955818,
+      "flag_zero_duration": 60672,
+      "flag_negative_fare": 268589,
+      "flag_fare_outlier": 71
+    },
+    "seconds": 74.5
+  },
+  "2025-12": {
+    "bronze_rows": 4305006,
+    "silver_rows": 4255916,
+    "quarantine_rows": 49090,
+    "quarantine_reasons": {
+      "distance_out_of_range": 150,
+      "negative_total_amount": 48867,
+      "duration_over_24h": 44,
+      "negative_total_amount,distance_out_of_range": 2,
+      "pickup_outside_file_month": 9,
+      "duplicate_trip_key": 16,
+      "dropoff_before_pickup": 2
+    },
+    "reconciles": true,
+    "operation": "MERGE",
+    "merge_inserted": "4255916",
+    "merge_updated": "0",
+    "flags": {
+      "flag_zero_distance": 148989,
+      "flag_zero_passengers": 1214099,
+      "flag_zero_duration": 58019,
+      "flag_negative_fare": 18,
+      "flag_fare_outlier": 57
+    },
+    "seconds": 69.7
+  }
+}

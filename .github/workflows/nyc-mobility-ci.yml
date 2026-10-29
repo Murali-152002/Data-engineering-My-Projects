@@ -1,0 +1,75 @@
+name: nyc-mobility-ci
+
+on:
+  push:
+    paths: ["nyc-mobility-incremental-pipeline/**", ".github/workflows/nyc-mobility-ci.yml"]
+  pull_request:
+    paths: ["nyc-mobility-incremental-pipeline/**", ".github/workflows/nyc-mobility-ci.yml"]
+
+defaults:
+  run:
+    working-directory: nyc-mobility-incremental-pipeline
+
+env:
+  SPARK_LOCAL_IP: 127.0.0.1
+  NYC_RAW: data_sample
+  NYC_LAKE: ${{ github.workspace }}/_ci/lake
+  NYC_RESULTS: ${{ github.workspace }}/_ci/results
+  NYC_EXPORT: ${{ github.workspace }}/_ci/export
+  LATE_WORK: ${{ github.workspace }}/_ci/late
+  LATE_HOLDOUT: "500"
+  LATE_CORRUPT: "200"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: "11"}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: nyc-mobility-incremental-pipeline/requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.ivy2
+          key: ivy-delta-3.2.0
+      - run: pip install -r requirements.txt ruff
+      - name: Lint
+        run: ruff check src tests dags
+      - name: Unit tests (validation rules)
+        run: python -m pytest tests/test_silver_rules.py -q
+      - name: Bronze + silver, two months (sample)
+        run: |
+          python src/reference.py
+          python src/pipeline.py 2025-01
+          python src/pipeline.py 2025-02
+      - name: Repeat a month (MERGE must be a no-op) and verify reconciliation
+        run: |
+          python src/pipeline.py 2025-02
+          python src/verify.py --expect-merge
+      - name: Late-arriving / corrected data test
+        run: python src/late_data_test.py 2025-01
+      - name: Gold layer (dbt build)
+        run: |
+          python src/export_snapshot.py
+          cd dbt_project && DBT_PROFILES_DIR=. dbt build
+
+  dag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.10"}
+      - name: Install Airflow (pinned with its constraints file)
+        run: |
+          pip install pytest "apache-airflow==2.10.5" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.10.5/constraints-3.10.txt"
+      - name: DAG integrity tests
+        run: |
+          export AIRFLOW_HOME=$RUNNER_TEMP/airflow AIRFLOW__CORE__LOAD_EXAMPLES=False
+          airflow db migrate
+          python -m pytest tests/test_dag.py -q

@@ -1,45 +1,34 @@
 # Data Engineering Projects: Muralidhar Reddy Anumandla
 
-Three batch data pipelines built around the Azure data stack: incremental loading, medallion layers, star-schema
-modeling, dbt, Airflow, and a local-LLM assistant. Each project has an architecture diagram, a test suite and exact
-commands to run it.
+Portfolio site: https://murali-152002.github.io/
 
 Contact: anumandlamuralidharreddy@gmail.com | [LinkedIn](https://www.linkedin.com/in/muralidhar-reddy-anumandla-070576241)
 
-> **Read this first:** the data is synthetic or mocked and everything runs locally. Azure services are represented by
-> pipeline-as-code (ADF JSON, T-SQL) and local stand-ins, which each project README maps back to the real service.
-> No live Azure subscription was used. At work I run production pipelines on Azure Data Factory and Databricks; these
-> repos are separate personal projects.
+Two pipelines built on **real public data**, each with tests, CI on GitHub Actions and every number measured on a real run. Older projects below use synthetic data and are labeled that way.
 
-| Project | Stack | What it proves | Checked by |
+> **Honest scope:** everything runs locally (PySpark local mode, Delta Lake, DuckDB), with no cloud deployment yet. At work I run production pipelines on Azure Data Factory and Databricks; these repos are separate personal projects.
+
+| Project | Data | Stack | Checked by |
 |---|---|---|---|
-| [Orders Lakehouse + LLM Assistant](./orders-lakehouse-adf-dbt-airflow) | ADF, Delta Lake, dbt, Airflow, Ollama | Idempotent paginated API ingestion, dbt star schema, Airflow orchestration, guarded LLM tool-calling | 4 ingestion tests, 19 dbt tests, 15 assistant tests |
-| [Multi-Source Batch ETL & Data Warehouse](./multi-source-databricks-etl) | PySpark, Delta Lake | Bronze/Silver/Gold pipeline, Delta MERGE upserts, partition + Z-order benchmark, time travel | `pytest` suite, benchmark script |
-| [Cloud-Based Batch ETL Pipeline](./cloud-batch-etl-pipeline) | Azure Data Factory, Azure SQL, T-SQL | Watermark incremental copy, MERGE stored procedure, index tuning | `pytest` suite, local index benchmark |
+| [NYC Mobility Incremental Pipeline](./nyc-mobility-incremental-pipeline) | 48.7M real NYC TLC taxi trips (12 months) + daily weather | PySpark, Delta Lake MERGE, dbt (DuckDB), Airflow, GitHub Actions | 37 dbt tests, pytest, late-data test, `airflow dags test` |
+| [CMS Claims Lakehouse](./claims-lakehouse-cms-delta-dbt) | 1.56M rows of real CMS Medicare inpatient and Part D files | PySpark, Delta Lake MERGE, dbt (DuckDB), GitHub Actions | 32 dbt tests, 6 pytest tests, idempotent re-run |
 
-## How to read this repo
+## NYC Mobility Incremental Pipeline
+Loads one month at a time with an idempotent Delta MERGE. Bad rows go to a quarantine table with a reason each: 48,722,602 bronze rows = 47,743,923 silver + 978,679 quarantined (2.0%). A late-arriving and corrected-data test inserted 19,380 rows and updated 4,938, ending identical to a clean load with 0 duplicates. A dbt gold layer passes 37 of 37 tests, an Airflow DAG orchestrates the run, and CI runs the pipeline on a real-data sample.
 
-1. Start with the **Orders Lakehouse** README: it has the clearest architecture diagram and the most complete test story.
-2. The **Multi-Source** project shows PySpark transformation logic and Delta Lake behavior (MERGE, partitioning, versioning).
-3. The **Cloud Batch** project shows the ADF + T-SQL design, including the data-quality handling inside the MERGE procedure.
+## CMS Claims Lakehouse
+Bronze, silver and gold over two real CMS Medicare files (145,879 inpatient and 1,416,883 Part D rows), with a quarantine table and a check that fails the job if bronze does not equal silver plus quarantine. Silver is written with a Delta MERGE on the business key and a second run leaves counts unchanged. The dbt layer passes 32 data tests.
 
-## Project summaries
+## Earlier projects (synthetic or mock data)
 
-**Orders Lakehouse + LLM Assistant.** An ADF pipeline designed from scratch (Lookup, Until-loop pagination, watermark
-advanced only on full success) lands orders into Delta bronze. dbt builds `fct_orders` plus three dimensions with 19
-tests, and Airflow runs the dbt layer. A local-LLM assistant answers questions about the pipeline through four
-read-only tools: schema, SELECT-only SQL, dbt run results and the ingestion watermark.
-
-**Multi-Source Batch ETL.** Daily CSV drops (about 120K-150K rows/day) and a relational source flow through
-Bronze, Silver and Gold into a star schema. The fact table loads with a Delta MERGE, every stage retries with backoff,
-and a failed stage stops the run instead of passing bad data forward.
-
-**Cloud-Based Batch ETL.** Blob CSV drops are copied by an ADF watermark pipeline into Azure SQL staging, then a MERGE
-stored procedure cleans, dedups and upserts into the star schema. Rows with a null `CustomerID` are logged to a
-rejected-rows table instead of being silently dropped.
+| Project | Stack | What it shows |
+|---|---|---|
+| [Orders Lakehouse + LLM Assistant](./orders-lakehouse-adf-dbt-airflow) | ADF, Delta Lake, dbt, Airflow, Ollama | Idempotent paginated API ingestion, dbt star schema, guarded LLM tool-calling |
+| [Multi-Source Batch ETL & Data Warehouse](./multi-source-databricks-etl) | PySpark, Delta Lake | Bronze/Silver/Gold, Delta MERGE upserts, partition + Z-order benchmark |
+| [Cloud-Based Batch ETL Pipeline](./cloud-batch-etl-pipeline) | Azure Data Factory, Azure SQL, T-SQL | Watermark incremental copy, MERGE stored procedure, index tuning |
+| [E-commerce Sales Analytics (Power BI)](./ecommerce-sales-analytics-powerbi) | Power BI | Dashboard reporting |
 
 ## Limitations
-
-- Synthetic data and mock sources, not production data.
-- Local stand-ins replace Databricks, ADF and Azure SQL when running the code.
-- Performance figures come from local runs and are labeled as such in each README.
+- The two real-data projects run locally and the dbt gold layer reads a Parquet snapshot exported from Delta silver (DuckDB cannot read Delta offline here).
+- Performance figures come from local runs on a 4-core, 4 GB VM and are labeled as such in each README.
+- The earlier projects use synthetic or mock data and local stand-ins for Azure services.

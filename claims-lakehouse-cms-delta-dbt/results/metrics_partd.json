@@ -1,0 +1,36 @@
+{
+  "bronze": {
+    "rows": 1416883,
+    "columns": 84,
+    "seconds": 25.4
+  },
+  "silver": {
+    "bronze_rows": 1416883,
+    "silver_rows": 1416881,
+    "quarantined_rows": 2,
+    "hard_rule_hits": {
+      "null_key": 2,
+      "bad_npi_format": 0,
+      "negative_value": 0,
+      "opioid_claims_exceed_total_claims": 0,
+      "duplicate_npi": 0
+    },
+    "soft_flag_rows": {
+      "opioid_rate_out_of_range": 0,
+      "zero_cost_with_claims": 41
+    },
+    "reconciled": true,
+    "write_mode": "merge",
+    "silver_delta_history": [
+      {
+        "version": 1,
+        "operation": "MERGE"
+      },
+      {
+        "version": 0,
+        "operation": "WRITE"
+      }
+    ],
+    "seconds": 46.5
+  }
+}

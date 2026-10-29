@@ -1,0 +1,21 @@
+zone,borough,is_airport,trips,revenue,revenue_per_trip,tip_pct_of_fare,trips_rank
+Upper East Side South,Manhattan,false,2095015,44087759.0,21.04,19.83,1
+Midtown Center,Manhattan,false,2051313,52925526.0,25.8,18.48,2
+JFK Airport,Queens,true,1930934,157334083.0,81.48,14.67,3
+Upper East Side North,Manhattan,false,1853185,39280343.0,21.2,18.92,4
+Penn Station/Madison Sq West,Manhattan,false,1508249,38713695.0,25.67,18.47,5
+Midtown East,Manhattan,false,1482546,36934793.0,24.91,19.45,6
+Times Sq/Theatre District,Manhattan,false,1475751,42176290.0,28.58,17.15,7
+Lincoln Square East,Manhattan,false,1366350,30525265.0,22.34,18.73,8
+Union Sq,Manhattan,false,1274447,29316832.0,23.0,17.53,9
+Murray Hill,Manhattan,false,1270552,30618382.0,24.1,17.44,10
+LaGuardia Airport,Queens,true,1254059,88223354.0,70.35,20.56,11
+East Chelsea,Manhattan,false,1230226,31744162.0,25.8,16.92,12
+Midtown North,Manhattan,false,1213348,30994256.0,25.54,18.7,13
+Upper West Side South,Manhattan,false,1204769,26336508.0,21.86,17.94,14
+East Village,Manhattan,false,1201157,27231831.0,22.67,14.08,15
+Clinton East,Manhattan,false,1127077,27234907.0,24.16,16.02,16
+West Village,Manhattan,false,1048843,24045555.0,22.93,16.3,17
+Midtown South,Manhattan,false,1016630,25018787.0,24.61,16.51,18
+Lenox Hill West,Manhattan,false,1012879,21281098.0,21.01,17.25,19
+Gramercy,Manhattan,false,909010,20648606.0,22.72,16.47,20
