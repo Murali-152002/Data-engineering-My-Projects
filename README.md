@@ -24,7 +24,6 @@ Bronze, silver and gold over two real CMS Medicare files (145,879 inpatient and 
 | Project | Stack | What it shows |
 |---|---|---|
 | [Orders Lakehouse + LLM Assistant](./orders-lakehouse-adf-dbt-airflow) | ADF, Delta Lake, dbt, Airflow, Ollama | Idempotent paginated API ingestion, dbt star schema, guarded LLM tool-calling |
-| [Multi-Source Batch ETL & Data Warehouse](./multi-source-databricks-etl) | PySpark, Delta Lake | Bronze/Silver/Gold, Delta MERGE upserts, partition + Z-order benchmark |
 | [Cloud-Based Batch ETL Pipeline](./cloud-batch-etl-pipeline) | Azure Data Factory, Azure SQL, T-SQL | Watermark incremental copy, MERGE stored procedure, index tuning |
 | [E-commerce Sales Analytics (Power BI)](./ecommerce-sales-analytics-powerbi) | Power BI | Dashboard reporting |
 
