@@ -10,6 +10,18 @@ Bronze / silver / gold pipeline over two real CMS Medicare public-use files, bui
 | Medicare Inpatient Hospitals, by Provider and Service (2024) | data.cms.gov | 145,879 | 15 |
 | Medicare Part D Prescribers, by Provider (2024) | data.cms.gov | 1,416,883 | 84 |
 
+## Architecture
+```mermaid
+flowchart LR
+    I["CMS Inpatient file<br/>145,879 rows"] --> B["Bronze (Delta)<br/>raw strings + lineage columns"]
+    P["CMS Part D file<br/>1,416,883 rows"] --> B
+    B --> S["Silver (Delta)<br/>typed, hard rules, MERGE on business key"]
+    S --> Q["Quarantine<br/>reason per row"]
+    S --> V["verify<br/>bronze = silver + quarantine"]
+    S --> X["Parquet snapshot"]
+    X --> G["dbt on DuckDB<br/>dims, facts, marts, 32 tests"]
+```
+
 ## Pipeline
 1. **Bronze** (`src/bronze.py`): land the CSV as-is (all strings) plus `_source_file` and `_ingested_at` as a Delta table. Inpatient 9.1 s, Part D 25.4 s.
 2. **Silver** (`src/silver.py`): typed columns, trimmed strings, 8 hard rules for inpatient and 5 for Part D, soft flags, and a quarantine table with a reason per row. Silver is written with a Delta `MERGE` on the business key (provider+DRG, NPI), so re-runs are idempotent. Bronze rows must equal silver plus quarantine, or the job fails.

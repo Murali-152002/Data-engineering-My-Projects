@@ -9,13 +9,19 @@ A monthly, idempotent pipeline over **48.7 million real NYC yellow-taxi trips (a
 ## What this project is about
 The point is not the medallion layers, it is **data that keeps arriving and changing**: new months land over time, late rows show up, and values get corrected. The pipeline must absorb all of that without duplicates and without rebuilding everything.
 
+```mermaid
+flowchart LR
+    A["TLC monthly Parquet<br/>48.7M trips"] --> B["Bronze (Delta)<br/>replaceWhere per month"]
+    B --> C["Silver (Delta)<br/>MERGE per month, rules, flags, zone join"]
+    Z["Zones CSV + NOAA weather"] --> R["Reference tables"]
+    R --> C
+    C --> Q["Quarantine<br/>reason per row"]
+    C --> V["verify.py<br/>bronze = silver + quarantine"]
+    V --> E["Parquet snapshot"]
+    E --> D["dbt on DuckDB<br/>dim_zone, dim_date, fct_trips_hourly, 4 marts"]
 ```
-TLC monthly Parquet ─► bronze (Delta, replaceWhere per month)
-                          └► silver (Delta MERGE per month, rules, flags, zone join) ─► quarantine (reason per row)
-zones CSV + NOAA weather ─► silver reference tables
-silver ─► Parquet snapshot ─► dbt (DuckDB): dim_zone, dim_date(+weather), fct_trips_hourly, 4 marts
-Airflow: reference ► bronze_silver ► verify ► export_snapshot ► dbt_build   (one run = one month, catchup=True)
-```
+
+Airflow runs it as `reference > bronze_silver > verify > export_snapshot > dbt_build`, one run per month (`catchup=True`).
 
 ## Data
 | Source | Rows |
