@@ -12,11 +12,13 @@ jobs:
         working-directory: claims-lakehouse-cms-delta-dbt
     env:
       CL_RAW: ${{ github.workspace }}/claims-lakehouse-cms-delta-dbt/data_sample
-      CL_LAKE: ${{ runner.temp }}/lake
-      CL_RESULTS: ${{ runner.temp }}/results
       SPARK_LOCAL_IP: 127.0.0.1
     steps:
       - uses: actions/checkout@v4
+      - name: Set lake and results folders
+        run: |
+          echo "CL_LAKE=$RUNNER_TEMP/lake" >> "$GITHUB_ENV"
+          echo "CL_RESULTS=$RUNNER_TEMP/results" >> "$GITHUB_ENV"
       - uses: actions/setup-java@v4
         with: {distribution: temurin, java-version: "11"}
       - uses: actions/setup-python@v5
